@@ -67,7 +67,7 @@ export function auditSubtitle(data: AppData): AuditResult {
         title: `Generic subtitle for locale \`${locale}\``,
         message: `The subtitle for ${locale} ("${subtitle}") contains the generic term "${matchedGeneric}". Apple may flag superlative or subjective claims.`,
         locale,
-        remedy: `Replace generic terms with specific, factual descriptions of what your app does.`,
+        remedy: `Replace generic terms with specific, factual descriptions of what your app does. Example: Use "Track daily expenses" instead of "Best finance app".`,
       });
     }
 

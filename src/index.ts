@@ -9,6 +9,9 @@ import { runAudit, getAuditorNames } from './auditors/index.js';
 import { renderTerminal } from './reporter/terminal.js';
 import { renderMarkdown } from './reporter/markdown.js';
 import { renderJSON } from './reporter/json.js';
+import { renderHTML } from './reporter/html.js';
+import { renderGitHub } from './reporter/github.js';
+import { renderDiff } from './reporter/diff.js';
 import { generateDemoData } from './demo/data.js';
 
 const VERSION = '1.0.0';
@@ -23,12 +26,17 @@ program
   .option('--issuer-id <id>', 'App Store Connect API Issuer ID')
   .option('--key <path>', 'Path to .p8 private key file')
   .option('--app-id <id>', 'App ID (auto-detected if only one app)')
-  .option('--format <type>', 'Output format: terminal, markdown, json', 'terminal')
-  .option('--output <path>', 'Save report to file')
+  .option(
+    '-f, --format <format>',
+    'Output format (terminal, markdown, json, html, github)',
+    'terminal',
+  ).option('--output <path>', 'Save report to file')
   .option('--only <modules>', 'Run only these audit modules (comma-separated)')
   .option('--skip <modules>', 'Skip these audit modules (comma-separated)')
+  .option('--compare <path>', 'Path to a previous JSON report to compare against')
   .option('--ci', 'CI mode: exit with non-zero if score below --min-score', false)
   .option('--min-score <score>', 'Minimum score for CI mode (default: 75)', '75')
+  .option('--strict', 'Strict mode: only report critical and high findings', false)
   .option('--demo', 'Run with demo data (no API key required)', false)
   .option('--list-modules', 'List available audit modules')
   .action(async (options) => {
@@ -52,8 +60,10 @@ program
       output: options.output,
       skip: options.skip ? options.skip.split(',').map((s: string) => s.trim()) : [],
       only: options.only ? options.only.split(',').map((s: string) => s.trim()) : [],
+      compare: options.compare,
       ci: options.ci,
       minScore: parseInt(options.minScore, 10),
+      strict: options.strict,
       demo: options.demo,
     });
 
@@ -120,6 +130,7 @@ program
     const report = await runAudit(appData, {
       skip: config.skip,
       only: config.only,
+      strict: config.strict,
     });
 
     spinnerAudit?.succeed(`Audit complete — ${report.summary.total} findings`);
@@ -130,15 +141,32 @@ program
 
     // Render output
     let output: string;
-    switch (config.format) {
-      case 'markdown':
-        output = renderMarkdown(report);
-        break;
-      case 'json':
-        output = renderJSON(report);
-        break;
-      default:
-        output = renderTerminal(report);
+    if (config.compare && fs.existsSync(config.compare)) {
+      try {
+        const previous = JSON.parse(fs.readFileSync(config.compare, 'utf-8'));
+        output = renderDiff(report, previous);
+      } catch (e) {
+        console.error(e);
+        console.error(chalk.red(`  ✖ Failed to read or parse previous report at ${config.compare}`));
+        process.exit(1);
+      }
+    } else {
+      switch (config.format) {
+        case 'markdown':
+          output = renderMarkdown(report);
+          break;
+        case 'json':
+          output = renderJSON(report);
+          break;
+        case 'html':
+          output = renderHTML(report);
+          break;
+        case 'github':
+          output = renderGitHub(report);
+          break;
+        default:
+          output = renderTerminal(report);
+      }
     }
 
     // Output

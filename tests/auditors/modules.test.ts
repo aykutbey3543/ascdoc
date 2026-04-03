@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { auditScreenshots } from '../../src/auditors/screenshots.js';
 import { auditPrivacy } from '../../src/auditors/privacy.js';
 import { auditSubtitle } from '../../src/auditors/subtitle.js';
@@ -7,6 +7,10 @@ import { auditSubscriptions } from '../../src/auditors/subscription.js';
 import { auditStorefront } from '../../src/auditors/storefront.js';
 import { auditReviewInfo } from '../../src/auditors/review-info.js';
 import { generateDemoData } from '../../src/demo/data.js';
+
+vi.mock('../../src/utils/url.js', () => ({
+  checkUrlReachability: async () => ({ reachable: true }),
+}));
 
 describe('Screenshot Auditor', () => {
   it('detects missing screenshots for locale', () => {
@@ -41,9 +45,9 @@ describe('Screenshot Auditor', () => {
 });
 
 describe('Privacy Auditor', () => {
-  it('detects missing privacy policy URL', () => {
+  it('detects missing privacy policy URL', async () => {
     const data = generateDemoData();
-    const result = auditPrivacy(data);
+    const result = await auditPrivacy(data);
 
     const missingUrl = result.findings.find(
       (f) => f.id === 'PRV-001' && f.locale === 'ja',
@@ -52,9 +56,9 @@ describe('Privacy Auditor', () => {
     expect(missingUrl?.severity).toBe('critical');
   });
 
-  it('detects non-HTTPS privacy URL', () => {
+  it('detects non-HTTPS privacy URL', async () => {
     const data = generateDemoData();
-    const result = auditPrivacy(data);
+    const result = await auditPrivacy(data);
 
     const httpUrl = result.findings.find(
       (f) => f.id === 'PRV-003' && f.locale === 'fr-FR',

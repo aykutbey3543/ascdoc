@@ -16,6 +16,7 @@ export function renderJSON(report: AuditReport): string {
       grade: report.grade,
       gradeLabel: report.gradeLabel,
       summary: report.summary,
+      findings: report.findings,
       results: report.results.map((r) => ({
         module: r.module,
         label: r.label,

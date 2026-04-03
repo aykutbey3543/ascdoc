@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASC Doctor Report - WeatherPulse</title>
+  <style>
+    :root {
+      --bg: #0f111a;
+      --surface: #1e2136;
+      --surface-hover: #2a2e47;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      
+      --critical: #ef4444;
+      --high: #f97316;
+      --warning: #eab308;
+      --info: #3b82f6;
+      --success: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .logo {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    
+    .subtitle {
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .score-card {
+      background-color: var(--surface);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 40px;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .score-grade {
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-number {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .app-meta {
+      text-align: left;
+    }
+
+    .app-meta p {
+      margin: 5px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+      background: var(--surface);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      background: var(--surface-hover);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-width: 32px;
+    }
+    
+    .tag.critical { background: rgba(239, 68, 68, 0.2); color: var(--critical); }
+    .tag.high { background: rgba(249, 115, 22, 0.2); color: var(--high); }
+    .tag.warning { background: rgba(234, 179, 8, 0.2); color: var(--warning); }
+    .tag.info { background: rgba(59, 130, 246, 0.2); color: var(--info); }
+    .tag.zero { color: var(--text-muted); }
+
+    .findings-section { margin-bottom: 40px; }
+    
+    .finding-card {
+      background: var(--surface);
+      border-left: 4px solid var(--border);
+      border-radius: 0 8px 8px 0;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .finding-card.critical { border-left-color: var(--critical); }
+    .finding-card.high { border-left-color: var(--high); }
+    .finding-card.warning { border-left-color: var(--warning); }
+    .finding-card.info { border-left-color: var(--info); }
+
+    .finding-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .finding-id {
+      background: var(--surface-hover);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      margin-right: 12px;
+      color: var(--text-muted);
+    }
+
+    .finding-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .finding-message { margin: 0 0 12px 0; color: #cbd5e1; }
+    
+    .finding-remedy {
+      background: rgba(34, 197, 94, 0.1);
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .finding-remedy strong {
+      color: var(--success);
+    }
+
+    .passed-checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .passed-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding-top: 40px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+    
+    a { color: var(--info); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">🩺</div>
+      <h1>ASC Doctor Report</h1>
+      <div class="subtitle">Release readiness audit</div>
+    </header>
+
+    <div class="score-card">
+      <div class="app-meta">
+        <h2>WeatherPulse</h2>
+        <p><strong>Bundle ID:</strong> <code>com.example.weatherpulse</code></p>
+        <p><strong>Version:</strong> 2.4.0 (IOS)</p>
+        <p><strong>Date:</strong> 2026-04-03</p>
+      </div>
+      <div style="text-align: center;">
+        <div class="score-grade" style="color: var(--critical)">
+          ⛔ F
+        </div>
+        <div class="score-number">0 / 100</div>
+        <div style="margin-top: 8px; font-weight: 600; color: var(--critical)">Do not submit</div>
+      </div>
+    </div>
+
+    <h2>Audit Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th style="text-align: center;">Critical</th>
+          <th style="text-align: center;">High</th>
+          <th style="text-align: center;">Warning</th>
+          <th style="text-align: center;">Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>🌍 Localization</strong></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag high">1</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag info">3</span></td>
+        </tr>
+        <tr>
+          <td><strong>📱 Screenshots</strong></td>
+          <td style="text-align: center;"><span class="tag critical">1</span></td>
+          <td style="text-align: center;"><span class="tag high">1</span></td>
+          <td style="text-align: center;"><span class="tag warning">1</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+        </tr>
+        <tr>
+          <td><strong>🔞 Age Rating</strong> &nbsp;✅</td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag info">1</span></td>
+        </tr>
+        <tr>
+          <td><strong>💬 Subtitle</strong></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag warning">3</span></td>
+          <td style="text-align: center;"><span class="tag info">1</span></td>
+        </tr>
+        <tr>
+          <td><strong>🔒 Privacy</strong> &nbsp;✅</td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag info">1</span></td>
+        </tr>
+        <tr>
+          <td><strong>💳 Subscriptions & IAP</strong></td>
+          <td style="text-align: center;"><span class="tag critical">2</span></td>
+          <td style="text-align: center;"><span class="tag high">8</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+        </tr>
+        <tr>
+          <td><strong>🌐 Storefront Coverage</strong></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag warning">3</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+        </tr>
+        <tr>
+          <td><strong>📋 Review Info</strong> &nbsp;✅</td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+          <td style="text-align: center;"><span class="tag zero">-</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="findings-section">
+      <h2>🔴 Critical Findings</h2>
+      <div class="finding-card critical">
+        <div class="finding-header">
+          <span class="finding-id">SCR-001</span>
+          <h3 class="finding-title">No screenshots for locale <code>fr-FR</code></h3>
+        </div>
+        <p class="finding-message">The fr-FR localization has no screenshot sets. At least one set with screenshots is required for submission.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Upload screenshots for fr-FR in App Store Connect > App Store > Version > Media.
+        </div>
+      </div>
+      <div class="finding-card critical">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-003</span>
+          <h3 class="finding-title">Subscription "Monthly Pro" missing display name for <code>de-DE</code></h3>
+        </div>
+        <p class="finding-message">The subscription "Monthly Pro" has no localized display name for de-DE. This is required for the subscription sheet.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add a display name for "Monthly Pro" in de-DE.
+        </div>
+      </div>
+      <div class="finding-card critical">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-004</span>
+          <h3 class="finding-title">Subscription "Monthly Pro" missing description for <code>de-DE</code></h3>
+        </div>
+        <p class="finding-message">The subscription "Monthly Pro" has no localized description for de-DE. This is required for App Store display.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add a description for "Monthly Pro" in de-DE.
+        </div>
+      </div>
+    </div>
+    <div class="findings-section">
+      <h2>🟠 High Findings</h2>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">LOC-008</span>
+          <h3 class="finding-title">App info locale <code>ko</code> missing version metadata</h3>
+        </div>
+        <p class="finding-message">App info localization exists for ko but there's no corresponding version localization (description, keywords, etc.).</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add version metadata (description, keywords) for ko or remove the app info localization if not needed.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SCR-003</span>
+          <h3 class="finding-title">Empty screenshot set for iPhone 6.7" in <code>de-DE</code></h3>
+        </div>
+        <p class="finding-message">A screenshot set exists for iPhone 6.7" (de-DE) but contains 0 screenshots. Either upload screenshots or remove the empty set.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Upload screenshots to the iPhone 6.7" set for de-DE, or delete the empty set.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-001</span>
+          <h3 class="finding-title">Subscription group "WeatherPulse Pro" missing <code>de-DE</code> localization</h3>
+        </div>
+        <p class="finding-message">The subscription group "WeatherPulse Pro" has no display name for de-DE. This can cause "Missing Metadata" states for subscriptions in this group.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add a display name for de-DE under the subscription group "WeatherPulse Pro" in App Store Connect.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-001</span>
+          <h3 class="finding-title">Subscription group "WeatherPulse Pro" missing <code>ja</code> localization</h3>
+        </div>
+        <p class="finding-message">The subscription group "WeatherPulse Pro" has no display name for ja. This can cause "Missing Metadata" states for subscriptions in this group.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add a display name for ja under the subscription group "WeatherPulse Pro" in App Store Connect.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-001</span>
+          <h3 class="finding-title">Subscription group "WeatherPulse Pro" missing <code>fr-FR</code> localization</h3>
+        </div>
+        <p class="finding-message">The subscription group "WeatherPulse Pro" has no display name for fr-FR. This can cause "Missing Metadata" states for subscriptions in this group.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add a display name for fr-FR under the subscription group "WeatherPulse Pro" in App Store Connect.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-005</span>
+          <h3 class="finding-title">Subscription "Monthly Pro" missing <code>ja</code> localization</h3>
+        </div>
+        <p class="finding-message">Your app supports ja but the subscription "Monthly Pro" has no localization for it.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add localized metadata for "Monthly Pro" in ja.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-005</span>
+          <h3 class="finding-title">Subscription "Monthly Pro" missing <code>fr-FR</code> localization</h3>
+        </div>
+        <p class="finding-message">Your app supports fr-FR but the subscription "Monthly Pro" has no localization for it.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add localized metadata for "Monthly Pro" in fr-FR.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-008</span>
+          <h3 class="finding-title">IAP "Radar Themes Pack" missing <code>de-DE</code> localization</h3>
+        </div>
+        <p class="finding-message">Your app supports de-DE but the IAP "Radar Themes Pack" has no localization for it.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add localized metadata for "Radar Themes Pack" in de-DE.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-008</span>
+          <h3 class="finding-title">IAP "Radar Themes Pack" missing <code>ja</code> localization</h3>
+        </div>
+        <p class="finding-message">Your app supports ja but the IAP "Radar Themes Pack" has no localization for it.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add localized metadata for "Radar Themes Pack" in ja.
+        </div>
+      </div>
+      <div class="finding-card high">
+        <div class="finding-header">
+          <span class="finding-id">SUBS-008</span>
+          <h3 class="finding-title">IAP "Radar Themes Pack" missing <code>fr-FR</code> localization</h3>
+        </div>
+        <p class="finding-message">Your app supports fr-FR but the IAP "Radar Themes Pack" has no localization for it.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add localized metadata for "Radar Themes Pack" in fr-FR.
+        </div>
+      </div>
+    </div>
+    <div class="findings-section">
+      <h2>🟡 Warnings</h2>
+      <div class="finding-card warning">
+        <div class="finding-header">
+          <span class="finding-id">SCR-004</span>
+          <h3 class="finding-title">Few screenshots for iPhone 6.7" in <code>ja</code></h3>
+        </div>
+        <p class="finding-message">Only 1 screenshot(s) for iPhone 6.7" (ja). Apple allows up to 10. More screenshots improve conversion.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Consider adding more screenshots (recommended: 5-8) for iPhone 6.7" in ja.
+        </div>
+      </div>
+      <div class="finding-card warning">
+        <div class="finding-header">
+          <span class="finding-id">SUB-004</span>
+          <h3 class="finding-title">Generic subtitle for locale <code>en-US</code></h3>
+        </div>
+        <p class="finding-message">The subtitle for en-US ("Best Weather App") contains the generic term "best". Apple may flag superlative or subjective claims.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Replace generic terms with specific, factual descriptions of what your app does.
+        </div>
+      </div>
+      <div class="finding-card warning">
+        <div class="finding-header">
+          <span class="finding-id">SUB-001</span>
+          <h3 class="finding-title">Missing subtitle for locale <code>de-DE</code></h3>
+        </div>
+        <p class="finding-message">No subtitle is set for de-DE. Subtitles appear below the app name in search results and improve discoverability.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add a compelling subtitle (max 30 chars) for de-DE that highlights your app's key value proposition.
+        </div>
+      </div>
+      <div class="finding-card warning">
+        <div class="finding-header">
+          <span class="finding-id">SUB-001</span>
+          <h3 class="finding-title">Missing subtitle for locale <code>ko</code></h3>
+        </div>
+        <p class="finding-message">No subtitle is set for ko. Subtitles appear below the app name in search results and improve discoverability.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add a compelling subtitle (max 30 chars) for ko that highlights your app's key value proposition.
+        </div>
+      </div>
+      <div class="finding-card warning">
+        <div class="finding-header">
+          <span class="finding-id">STR-002</span>
+          <h3 class="finding-title">Limited territory coverage (6 territories)</h3>
+        </div>
+        <p class="finding-message">Your app is available in only 6 territories. Apple supports 175+ storefronts.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Consider expanding availability to more territories to increase your potential audience.
+        </div>
+      </div>
+      <div class="finding-card warning">
+        <div class="finding-header">
+          <span class="finding-id">STR-004</span>
+          <h3 class="finding-title">Missing 9 major market(s)</h3>
+        </div>
+        <p class="finding-message">Your app is not available in: Japan, China, South Korea, Brazil, India, Italy, Spain, Netherlands, Turkey. These are among the highest-revenue App Store markets.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Consider making your app available in these markets: Japan, China, South Korea, Brazil, India, Italy, Spain, Netherlands, Turkey.
+        </div>
+      </div>
+      <div class="finding-card warning">
+        <div class="finding-header">
+          <span class="finding-id">STR-005</span>
+          <h3 class="finding-title">Localized for <code>ja</code> but not available in corresponding territory</h3>
+        </div>
+        <p class="finding-message">Your app has ja localization but is not available in the corresponding territory. The localization effort may be wasted.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Consider making your app available in the territory that corresponds to the ja localization, or remove the unused localization.
+        </div>
+      </div>
+    </div>
+    <div class="findings-section">
+      <h2>ℹ️ Informational</h2>
+      <div class="finding-card info">
+        <div class="finding-header">
+          <span class="finding-id">LOC-003</span>
+          <h3 class="finding-title">Missing promotional text for locale <code>de-DE</code></h3>
+        </div>
+        <p class="finding-message">Promotional text is empty for de-DE. This field can be updated without app review.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add promotional text for de-DE. This is shown at the top of the description and can be updated anytime.
+        </div>
+      </div>
+      <div class="finding-card info">
+        <div class="finding-header">
+          <span class="finding-id">LOC-003</span>
+          <h3 class="finding-title">Missing promotional text for locale <code>ja</code></h3>
+        </div>
+        <p class="finding-message">Promotional text is empty for ja. This field can be updated without app review.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add promotional text for ja. This is shown at the top of the description and can be updated anytime.
+        </div>
+      </div>
+      <div class="finding-card info">
+        <div class="finding-header">
+          <span class="finding-id">LOC-003</span>
+          <h3 class="finding-title">Missing promotional text for locale <code>fr-FR</code></h3>
+        </div>
+        <p class="finding-message">Promotional text is empty for fr-FR. This field can be updated without app review.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Add promotional text for fr-FR. This is shown at the top of the description and can be updated anytime.
+        </div>
+      </div>
+      <div class="finding-card info">
+        <div class="finding-header">
+          <span class="finding-id">AGE-003</span>
+          <h3 class="finding-title">All age rating fields set to minimal</h3>
+        </div>
+        <p class="finding-message">All content descriptors are set to NONE or INFREQUENT_OR_MILD. Verify this accurately reflects your app's content.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Review the age rating questionnaire to ensure it accurately represents your app's content.
+        </div>
+      </div>
+      <div class="finding-card info">
+        <div class="finding-header">
+          <span class="finding-id">SUB-002</span>
+          <h3 class="finding-title">Subtitle too short for locale <code>ja</code></h3>
+        </div>
+        <p class="finding-message">The subtitle for ja is only 2 characters ("WP"). Consider using more of the 30-character limit.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Expand the subtitle for ja to better utilize the 30-character limit.
+        </div>
+      </div>
+      <div class="finding-card info">
+        <div class="finding-header">
+          <span class="finding-id">PRV-005</span>
+          <h3 class="finding-title">No privacy choices URL configured</h3>
+        </div>
+        <p class="finding-message">No privacy choices URL is set. This is optional but recommended if your app collects personal data and you offer data management options.</p>
+        <div class="finding-remedy">
+          <strong>Fix:</strong> Consider adding a privacy choices URL where users can manage their data preferences.
+        </div>
+      </div>
+    </div>
+    <h2>✅ Passed Checks</h2>
+    <div class="passed-checks"><div class="passed-chip">🔞 Age Rating</div><div class="passed-chip">🔒 Privacy</div><div class="passed-chip">📋 Review Info</div>
+    </div>
+    <footer>
+      <p>Report generated by <a href="https://github.com/spectreet/ascdoc" target="_blank">ASC Doctor</a> - Release readiness auditor for App Store Connect</p>
+    </footer>
+  </div>
+</body>
+</html>

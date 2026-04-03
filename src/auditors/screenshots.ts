@@ -7,12 +7,12 @@ const REQUIRED_IPHONE_TYPES = [
   'APP_IPHONE_69',    // 6.9" (iPhone 16 Pro Max) — newest
 ];
 
-// iPad types for future validation
-// const REQUIRED_IPAD_TYPES = [
-//   'APP_IPAD_PRO_3GEN_129',
-//   'APP_IPAD_PRO_129',
-//   'APP_IPAD_13',
-// ];
+// iPad types for validation (If iPad screenshots exist, one of these is required)
+const REQUIRED_IPAD_TYPES = [
+  'APP_IPAD_PRO_3GEN_129',
+  'APP_IPAD_PRO_129',
+  'APP_IPAD_13',
+];
 
 const DEVICE_TYPE_LABELS: Record<string, string> = {
   'APP_IPHONE_35': 'iPhone 3.5"',
@@ -118,6 +118,52 @@ export function auditScreenshots(data: AppData): AuditResult {
           locale,
           remedy: `Consider adding more screenshots (recommended: 5-8) for ${deviceLabel} in ${locale}.`,
         });
+      }
+    }
+
+    // SCR-006: Missing required iPad screenshot if it's an iPad app
+    const hasIPadScreenshots = deviceTypes.some((t) => t.startsWith('APP_IPAD_'));
+    if (hasIPadScreenshots) {
+      const hasRequiredIPad = REQUIRED_IPAD_TYPES.some((t) => deviceTypes.includes(t));
+      if (!hasRequiredIPad) {
+        findings.push({
+          id: 'SCR-006',
+          module: 'screenshots',
+          severity: 'critical',
+          title: `Missing required iPad screenshots for \`${locale}\``,
+          message: `Your app has iPad screenshots, but none for the required 13" or 12.9" Pro format in ${locale}.`,
+          locale,
+          remedy: `Upload 13" or 12.9" iPad Pro screenshots for ${locale}.`,
+        });
+      }
+    }
+
+    // SCR-007: Duplicate screenshots via checksums
+    for (const set of sets) {
+      if (set.screenshots && set.screenshots.length > 1) {
+        const checksums = new Set<string>();
+        let hasDuplicates = false;
+        for (const s of set.screenshots) {
+          if (s.attributes.sourceFileChecksum) {
+            if (checksums.has(s.attributes.sourceFileChecksum)) {
+              hasDuplicates = true;
+              break;
+            }
+            checksums.add(s.attributes.sourceFileChecksum);
+          }
+        }
+        if (hasDuplicates) {
+          const deviceLabel = DEVICE_TYPE_LABELS[set.attributes.screenshotDisplayType] || set.attributes.screenshotDisplayType;
+          findings.push({
+            id: 'SCR-007',
+            module: 'screenshots',
+            severity: 'warning',
+            title: `Duplicate screenshots detected in \`${locale}\``,
+            message: `Multiple screenshots in the ${deviceLabel} set have the exact same image checksum.`,
+            locale,
+            remedy: `Remove duplicated files and ensure all screenshots show unique functionality.`,
+          });
+        }
       }
     }
   }

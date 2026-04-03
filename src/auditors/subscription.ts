@@ -97,6 +97,27 @@ export function auditSubscriptions(data: AppData): AuditResult {
         });
       }
     }
+
+    // SUBS-009: Trial messaging without auto-renew terms
+    for (const loc of sub.localizations) {
+      if (loc.attributes.description) {
+        const desc = loc.attributes.description.toLowerCase();
+        const mentionsTrial = desc.includes('trial') || desc.includes('free') || desc.includes('gratis') || desc.includes('essai');
+        const mentionsTerms = desc.includes('cancel') || desc.includes('renew') || desc.includes('payment') || desc.includes('charge') || desc.includes('pay') || desc.includes('renouvellement');
+        
+        if (mentionsTrial && !mentionsTerms) {
+          findings.push({
+            id: 'SUBS-009',
+            module: 'subscription',
+            severity: 'high',
+            title: `Missing billing terms in description for \`${loc.attributes.locale}\``,
+            message: `The subscription "${subName}" mentions a "trial" or "free" period but does not explain auto-renewal or cancellation terms.`,
+            locale: loc.attributes.locale,
+            remedy: `Add text explaining that the subscription auto-renews. Example: "Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Account will be charged for renewal within 24-hours prior to the end of the current period."`,
+          });
+        }
+      }
+    }
   }
 
   // ─── In-App Purchase Checks ───────────────────────────────────────

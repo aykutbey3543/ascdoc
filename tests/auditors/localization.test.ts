@@ -1,12 +1,16 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { auditLocalization } from '../../src/auditors/localization.js';
 import { generateDemoData } from '../../src/demo/data.js';
 import type { AppData } from '../../src/api/types.js';
 
+vi.mock('../../src/utils/url.js', () => ({
+  checkUrlReachability: async () => ({ reachable: true }),
+}));
+
 describe('Localization Auditor', () => {
-  it('detects missing description', () => {
+  it('detects missing description', async () => {
     const data = generateDemoData();
-    const result = auditLocalization(data);
+    const result = await auditLocalization(data);
 
     const finding = result.findings.find((f) => f.id === 'LOC-001');
     expect(finding).toBeDefined();
@@ -14,9 +18,9 @@ describe('Localization Auditor', () => {
     expect(finding?.severity).toBe('critical');
   });
 
-  it('detects placeholder text', () => {
+  it('detects placeholder text', async () => {
     const data = generateDemoData();
-    const result = auditLocalization(data);
+    const result = await auditLocalization(data);
 
     const finding = result.findings.find((f) => f.id === 'LOC-004');
     expect(finding).toBeDefined();
@@ -24,26 +28,26 @@ describe('Localization Auditor', () => {
     expect(finding?.severity).toBe('critical');
   });
 
-  it('detects missing keywords', () => {
+  it('detects missing keywords', async () => {
     const data = generateDemoData();
-    const result = auditLocalization(data);
+    const result = await auditLocalization(data);
 
     const finding = result.findings.find((f) => f.id === 'LOC-002');
     expect(finding).toBeDefined();
     expect(finding?.locale).toBe('de-DE');
   });
 
-  it('detects short descriptions', () => {
+  it('detects short descriptions', async () => {
     const data = generateDemoData();
-    const result = auditLocalization(data);
+    const result = await auditLocalization(data);
 
     const shortFindings = result.findings.filter((f) => f.id === 'LOC-005');
     expect(shortFindings.length).toBeGreaterThan(0);
   });
 
-  it('returns module metadata', () => {
+  it('returns module metadata', async () => {
     const data = generateDemoData();
-    const result = auditLocalization(data);
+    const result = await auditLocalization(data);
 
     expect(result.module).toBe('localization');
     expect(result.label).toBe('Localization');
@@ -51,7 +55,7 @@ describe('Localization Auditor', () => {
     expect(result.duration).toBeGreaterThanOrEqual(0);
   });
 
-  it('passes clean data', () => {
+  it('passes clean data', async () => {
     const cleanData: AppData = {
       ...generateDemoData(),
       versionLocalizations: [
@@ -85,7 +89,7 @@ describe('Localization Auditor', () => {
       ],
     };
 
-    const result = auditLocalization(cleanData);
+    const result = await auditLocalization(cleanData);
     const criticalOrHigh = result.findings.filter(
       (f) => f.severity === 'critical' || f.severity === 'high',
     );

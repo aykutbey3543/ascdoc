@@ -214,7 +214,7 @@ export interface AppData {
   appInfo: AppInfo;
   appInfoLocalizations: AppInfoLocalization[];
   ageRatingDeclaration: AgeRatingDeclaration | null;
-  screenshotSets: Array<ScreenshotSet & { screenshotCount: number; locale: string }>;
+  screenshotSets: Array<ScreenshotSet & { screenshotCount: number; locale: string; screenshots: Screenshot[] }>;
   subscriptionGroups: SubscriptionGroup[];
   subscriptions: Array<Subscription & { localizations: SubscriptionLocalization[] }>;
   subscriptionGroupLocalizations: Array<{ groupId: string; localizations: SubscriptionGroupLocalization[] }>;

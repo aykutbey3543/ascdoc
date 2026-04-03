@@ -60,7 +60,7 @@ export function generateDemoData(): AppData {
         attributes: {
           locale: 'ja',
           description: 'TODO: Add Japanese description here', // ← Placeholder!
-          keywords: 'weather,forecast',
+          keywords: 'weather,forecast,app,free,weather', // 'app', 'free' are weak; 'weather' is duplicate
           promotionalText: null,
           whatsNew: null,
           marketingUrl: null,
@@ -181,6 +181,10 @@ export function generateDemoData(): AppData {
         attributes: { screenshotDisplayType: 'APP_IPHONE_67' },
         screenshotCount: 5,
         locale: 'en-US',
+        screenshots: [
+          { type: 'appScreenshots', id: 'img1', attributes: { fileSize: 100, fileName: '1.png', sourceFileChecksum: 'abc123hash', assetDeliveryState: { state: 'COMPLETE', errors: [] } } },
+          { type: 'appScreenshots', id: 'img2', attributes: { fileSize: 100, fileName: '2.png', sourceFileChecksum: 'abc123hash', assetDeliveryState: { state: 'COMPLETE', errors: [] } } }, // Duplicate!
+        ] as any,
       },
       // en-US: Has iPad 12.9" with 3 screenshots ✓
       {
@@ -189,6 +193,16 @@ export function generateDemoData(): AppData {
         attributes: { screenshotDisplayType: 'APP_IPAD_PRO_3GEN_129' },
         screenshotCount: 3,
         locale: 'en-US',
+        screenshots: [],
+      },
+      // de-DE: Has iPad 9.7" but no required 13" iPad
+      {
+        type: 'appScreenshotSets',
+        id: 'ss-de-ipad97',
+        attributes: { screenshotDisplayType: 'APP_IPAD_97' },
+        screenshotCount: 3,
+        locale: 'de-DE',
+        screenshots: [],
       },
       // de-DE: iPhone set exists but EMPTY!
       {
@@ -197,6 +211,7 @@ export function generateDemoData(): AppData {
         attributes: { screenshotDisplayType: 'APP_IPHONE_67' },
         screenshotCount: 0, // ← Empty!
         locale: 'de-DE',
+        screenshots: [],
       },
       // ja: Only 1 screenshot (too few)
       {
@@ -205,6 +220,7 @@ export function generateDemoData(): AppData {
         attributes: { screenshotDisplayType: 'APP_IPHONE_67' },
         screenshotCount: 1, // ← Too few
         locale: 'ja',
+        screenshots: [],
       },
       // fr-FR: No screenshots at all — not in the array!
     ],
@@ -234,7 +250,7 @@ export function generateDemoData(): AppData {
             attributes: {
               locale: 'en-US',
               name: 'WeatherPulse Pro Monthly',
-              description: 'Unlock all pro features with monthly billing.',
+              description: 'Unlock all pro features with monthly billing. Try it free for 7 days!', // Will trigger SUBS-009 since no 'cancel' or 'renew'
               state: 'APPROVED',
             },
           },

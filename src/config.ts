@@ -9,10 +9,12 @@ export interface ASCConfig {
   minScore: number;
   skip: string[];
   only: string[];
-  format: 'terminal' | 'markdown' | 'json';
+  format: 'terminal' | 'markdown' | 'json' | 'html' | 'github';
   output?: string;
   ci: boolean;
   demo: boolean;
+  strict: boolean;
+  compare?: string;
 }
 
 const CONFIG_FILE_NAMES = ['.ascdocrc.json', '.ascdocrc', 'ascdoc.config.json'];
@@ -61,6 +63,8 @@ export function resolveConfig(cliOptions: Partial<ASCConfig>): ASCConfig {
     output: undefined,
     ci: false,
     demo: false,
+    strict: false,
+    compare: undefined,
   };
 
   // Layer 1: Config file

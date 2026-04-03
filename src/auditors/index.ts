@@ -13,6 +13,7 @@ import { calculateRiskScore, getGrade, getGradeLabel } from '../scoring/risk.js'
 interface AuditOptions {
   skip: string[];
   only: string[];
+  strict?: boolean;
 }
 
 const ALL_AUDITORS = [
@@ -42,7 +43,16 @@ export async function runAudit(data: AppData, options: AuditOptions): Promise<Au
   }
 
   // Run all auditors
-  const results: AuditResult[] = auditors.map((auditor) => auditor.fn(data));
+  const results: AuditResult[] = await Promise.all(
+    auditors.map(async (auditor) => await auditor.fn(data))
+  );
+
+  // Filter out warnings and infos if strict mode is enabled
+  if (options.strict) {
+    for (const r of results) {
+      r.findings = r.findings.filter((f) => f.severity === 'critical' || f.severity === 'high');
+    }
+  }
 
   // Collect all findings
   const allFindings: Finding[] = results.flatMap((r) => r.findings);

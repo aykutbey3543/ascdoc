@@ -1,5 +1,6 @@
 import type { AppData } from '../api/types.js';
 import type { AuditResult, Finding } from './types.js';
+import { checkUrlReachability } from '../utils/url.js';
 
 const PLACEHOLDER_PATTERNS = [
   /lorem\s+ipsum/i,
@@ -14,7 +15,7 @@ const PLACEHOLDER_PATTERNS = [
   /\bcoming\s+soon\b/i,
 ];
 
-export function auditLocalization(data: AppData): AuditResult {
+export async function auditLocalization(data: AppData): Promise<AuditResult> {
   const start = Date.now();
   const findings: Finding[] = [];
   const primaryLocale = data.app.attributes.primaryLocale;
@@ -109,6 +110,71 @@ export function auditLocalization(data: AppData): AuditResult {
           });
           break;
         }
+      }
+    }
+
+    if (attrs.keywords) {
+      // LOC-011: Weak Keywords
+      const keywordList = attrs.keywords.split(',').map((k) => k.trim().toLowerCase()).filter(Boolean);
+      const weakKeywords = ['app', 'free', 'best', 'new', 'top', 'discount', 'sale'];
+      const foundWeak = keywordList.filter((k) => weakKeywords.includes(k));
+      
+      if (foundWeak.length > 0) {
+        findings.push({
+          id: 'LOC-011',
+          module: 'localization',
+          severity: 'warning',
+          title: `Weak keywords in \`${locale}\``,
+          message: `Keywords contain weak or disallowed terms: ${foundWeak.join(', ')}. Apple auto-indexes "app" and "free" and rejects pricing/superlative claims.`,
+          locale,
+          remedy: `Remove weak keywords to save character limits. Use specific terms describing features.`,
+        });
+      }
+
+      // LOC-012: Duplicate Keywords
+      const uniqueKeywords = new Set(keywordList);
+      if (uniqueKeywords.size < keywordList.length) {
+        findings.push({
+          id: 'LOC-012',
+          module: 'localization',
+          severity: 'warning',
+          title: `Duplicate keywords in \`${locale}\``,
+          message: `Your keywords field contains duplicated terms. This wastes your 100-character limit.`,
+          locale,
+          remedy: `Remove duplicate keywords. Apple automatically combines singular/plural and keyword combinations. Example: use "weather,radar,forecast" instead of "weather,weather radar,forecast".`,
+        });
+      }
+    }
+
+    // LOC-009: Check Marketing URL reachability
+    if (attrs.marketingUrl && attrs.marketingUrl.startsWith('http')) {
+      const reachability = await checkUrlReachability(attrs.marketingUrl);
+      if (!reachability.reachable) {
+        findings.push({
+          id: 'LOC-009',
+          module: 'localization',
+          severity: 'high',
+          title: `Unreachable marketing URL for locale \`${locale}\``,
+          message: `The marketing URL for ${locale} appears to be unreachable. Error: ${reachability.error}`,
+          locale,
+          remedy: `Ensure the marketing URL is publicly accessible and returns a 200 OK status.`,
+        });
+      }
+    }
+
+    // LOC-010: Check Support URL reachability
+    if (attrs.supportUrl && attrs.supportUrl.startsWith('http')) {
+      const reachability = await checkUrlReachability(attrs.supportUrl);
+      if (!reachability.reachable) {
+        findings.push({
+          id: 'LOC-010',
+          module: 'localization',
+          severity: 'high',
+          title: `Unreachable support URL for locale \`${locale}\``,
+          message: `The support URL for ${locale} appears to be unreachable. Error: ${reachability.error}`,
+          locale,
+          remedy: `Ensure the support URL is publicly accessible and returns a 200 OK status. Support URL is required.`,
+        });
       }
     }
   }

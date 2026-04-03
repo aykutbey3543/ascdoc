@@ -1,7 +1,8 @@
 import type { AppData } from '../api/types.js';
 import type { AuditResult, Finding } from './types.js';
+import { checkUrlReachability } from '../utils/url.js';
 
-export function auditPrivacy(data: AppData): AuditResult {
+export async function auditPrivacy(data: AppData): Promise<AuditResult> {
   const start = Date.now();
   const findings: Finding[] = [];
 
@@ -51,6 +52,22 @@ export function auditPrivacy(data: AppData): AuditResult {
         locale,
         remedy: `Update the privacy policy URL for ${locale} to use HTTPS.`,
       });
+    }
+
+    // PRV-006: URL Reachability
+    if (url.startsWith('http')) {
+      const reachability = await checkUrlReachability(url);
+      if (!reachability.reachable) {
+        findings.push({
+          id: 'PRV-006',
+          module: 'privacy',
+          severity: 'high',
+          title: `Unreachable privacy policy URL for locale \`${locale}\``,
+          message: `The privacy policy URL for ${locale} ("${url}") appears to be unreachable. Error: ${reachability.error}`,
+          locale,
+          remedy: `Ensure the URL is publicly accessible and returns a 200 OK status.`,
+        });
+      }
     }
   }
 

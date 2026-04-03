@@ -171,13 +171,13 @@ async function getAgeRatingDeclaration(
 async function getScreenshotSets(
   client: APIClient,
   versionId: string,
-): Promise<Array<ScreenshotSet & { screenshotCount: number; locale: string }>> {
+): Promise<Array<ScreenshotSet & { screenshotCount: number; locale: string; screenshots: Screenshot[] }>> {
   // Get version localizations to know the locale for each set
   const localizations = await client.paginate<VersionLocalization>(
     `/v1/appStoreVersions/${versionId}/appStoreVersionLocalizations`,
   );
 
-  const allSets: Array<ScreenshotSet & { screenshotCount: number; locale: string }> = [];
+  const allSets: Array<ScreenshotSet & { screenshotCount: number; locale: string; screenshots: Screenshot[] }> = [];
 
   for (const loc of localizations) {
     const sets = await client.paginate<ScreenshotSet>(
@@ -194,6 +194,7 @@ async function getScreenshotSets(
         ...set,
         screenshotCount: screenshots.length,
         locale: loc.attributes.locale,
+        screenshots,
       });
     }
   }
