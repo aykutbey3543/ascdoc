@@ -8,7 +8,7 @@
 
 ASC Doctor is a read-only release auditor for App Store Connect. It analyzes your metadata, screenshots, URLs, and localizations against App Store guidelines and instantly gives you a risk score and an actionable HTML report.
 
-[![npm version](https://img.shields.io/npm/v/ascdoc?style=flat-square&color=CB3837)](https://www.npmjs.com/package/ascdoc)
+[![npm version](https://img.shields.io/npm/v/@spectrex/ascdoc?style=flat-square&color=CB3837)](https://www.npmjs.com/package/@spectrex/ascdoc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square)](https://nodejs.org/)
 
@@ -27,7 +27,7 @@ ASC Doctor is a read-only release auditor for App Store Connect. It analyzes you
 Experience it instantly via our demo data (no API key required):
 
 ```bash
-npx asc-doctor --demo --format html --output report.html
+npx @spectrex/ascdoc --demo --format html --output report.html
 # Then open report.html in your browser!
 ```
 
@@ -35,7 +35,7 @@ npx asc-doctor --demo --format html --output report.html
 
 ### Run against your real App Store Connect account:
 ```bash
-npx asc-doctor --key-id YOUR_KEY_ID --issuer-id YOUR_ISSUER_ID --key ./AuthKey.p8
+npx @spectrex/ascdoc --key-id YOUR_KEY_ID --issuer-id YOUR_ISSUER_ID --key ./AuthKey.p8
 ```
 
 ## ⚖️ Manage vs. Audit (Why not fastlane/asc?)
@@ -78,10 +78,10 @@ Severities: 🔴 Critical (−15pts) · 🟠 High (−8pts) · 🟡 Warning (−
 
 ```bash
 # Use directly with npx (recommended)
-npx asc-doctor --demo
+npx @spectrex/ascdoc --demo
 
 # Or install globally
-npm install -g asc-doctor
+npm install -g @spectrex/ascdoc
 ```
 
 ## 🔑 Setup
@@ -133,7 +133,7 @@ ascdoc --ci --min-score 75 --format json
 
 # Example GitHub Actions snippet:
 # - name: Audit App Store readiness
-#   run: npx asc-doctor --ci --min-score 75 --format html --output artifacts/report.html
+#   run: npx @spectrex/ascdoc --ci --min-score 75 --format html --output artifacts/report.html
 ```
 
 ### Config File
