@@ -1,5 +1,5 @@
 {
-  "name": "@spectrex/ascdoc",
+  "name": "asc-doctor",
   "version": "1.0.0",
   "description": "🩺 Release readiness auditor for App Store Connect",
   "type": "module",

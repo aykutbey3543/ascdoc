@@ -25,10 +25,10 @@ One command. Full diagnosis. Ship with confidence.
 
 ```bash
 # Try it instantly with demo data (no API key needed!)
-npx @spectrex/ascdoc --demo
+npx asc-doctor --demo
 
 # Run against your real app
-npx @spectrex/ascdoc --key-id YOUR_KEY_ID --issuer-id YOUR_ISSUER_ID --key ./AuthKey.p8
+npx asc-doctor --key-id YOUR_KEY_ID --issuer-id YOUR_ISSUER_ID --key ./AuthKey.p8
 ```
 
 ## 🎯 What It Catches
@@ -62,13 +62,13 @@ Severities: 🔴 Critical (−15pts) · 🟠 High (−8pts) · 🟡 Warning (−
 
 ```bash
 # Use directly with npx (recommended)
-npx @spectrex/ascdoc --demo
+npx asc-doctor --demo
 
 # Or install globally
-npm install -g @spectrex/ascdoc
+npm install -g asc-doctor
 
 # Or install locally
-npm install --save-dev @spectrex/ascdoc
+npm install --save-dev asc-doctor
 ```
 
 ## 🔑 Setup
@@ -129,7 +129,7 @@ ascdoc --ci --min-score 75 --format json
 
 # In your GitHub Actions workflow:
 # - name: Audit App Store readiness
-#   run: npx @spectrex/ascdoc --ci --min-score 75 --format json
+#   run: npx asc-doctor --ci --min-score 75 --format json
 ```
 
 ### Environment Variables
