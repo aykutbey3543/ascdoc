@@ -32,7 +32,7 @@ program
   ).option('--output <path>', 'Save report to file')
   .option('--only <modules>', 'Run only these audit modules (comma-separated)')
   .option('--skip <modules>', 'Skip these audit modules (comma-separated)')
-  .option('--compare <path>', 'Path to a previous JSON report to compare against')
+  .option('--compare [path]', 'Path to a previous JSON report to compare against (defaults to report.json)')
   .option('--ci', 'CI mode: exit with non-zero if score below --min-score', false)
   .option('--min-score <score>', 'Minimum score for CI mode (default: 75)', '75')
   .option('--strict', 'Strict mode: only report critical and high findings', false)
@@ -140,16 +140,22 @@ program
 
     // Render output
     let output: string;
-    if (config.compare && fs.existsSync(config.compare)) {
+    let comparePath = typeof config.compare === 'string' ? config.compare : (config.compare === true ? 'report.json' : undefined);
+
+    if (comparePath && fs.existsSync(comparePath)) {
       try {
-        const previous = JSON.parse(fs.readFileSync(config.compare, 'utf-8'));
+        const previous = JSON.parse(fs.readFileSync(comparePath, 'utf-8'));
         output = renderDiff(report, previous);
       } catch (e) {
         console.error(e);
-        console.error(chalk.red(`  ✖ Failed to read or parse previous report at ${config.compare}`));
+        console.error(chalk.red(`  ✖ Failed to read or parse previous report at ${comparePath}`));
         process.exit(1);
       }
     } else {
+      if (comparePath) {
+        console.warn(chalk.yellow(`  ℹ Comparison file not found: ${comparePath}. Skipping comparison.`));
+      }
+
       switch (config.format) {
         case 'markdown':
           output = renderMarkdown(report);

@@ -5,6 +5,7 @@ export interface ASCConfig {
   keyId: string;
   issuerId: string;
   keyPath: string;
+  privateKey?: string;
   appId?: string;
   minScore: number;
   skip: string[];
@@ -44,6 +45,7 @@ function loadEnvConfig(): Partial<ASCConfig> {
   if (process.env.ASC_KEY_ID) config.keyId = process.env.ASC_KEY_ID;
   if (process.env.ASC_ISSUER_ID) config.issuerId = process.env.ASC_ISSUER_ID;
   if (process.env.ASC_KEY_PATH) config.keyPath = process.env.ASC_KEY_PATH;
+  if (process.env.ASC_PRIVATE_KEY) config.privateKey = process.env.ASC_PRIVATE_KEY;
   if (process.env.ASC_APP_ID) config.appId = process.env.ASC_APP_ID;
   if (process.env.ASC_MIN_SCORE) config.minScore = parseInt(process.env.ASC_MIN_SCORE, 10);
 
@@ -106,9 +108,10 @@ export function validateConfig(config: ASCConfig): string[] {
   if (!config.issuerId) {
     errors.push('Missing --issuer-id (or ASC_ISSUER_ID env variable)');
   }
-  if (!config.keyPath) {
-    errors.push('Missing --key (or ASC_KEY_PATH env variable)');
-  } else if (!fs.existsSync(config.keyPath)) {
+  
+  if (!config.privateKey && !config.keyPath) {
+    errors.push('Missing --key (or ASC_PRIVATE_KEY_PATH / ASC_PRIVATE_KEY env variable)');
+  } else if (config.keyPath && !config.privateKey && !fs.existsSync(config.keyPath)) {
     errors.push(`Key file not found: ${config.keyPath}`);
   }
 

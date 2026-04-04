@@ -4,7 +4,8 @@ import * as jose from 'jose';
 export interface AuthCredentials {
   keyId: string;
   issuerId: string;
-  keyPath: string;
+  keyPath?: string;
+  privateKey?: string;
 }
 
 let cachedToken: string | null = null;
@@ -18,7 +19,7 @@ export async function generateToken(credentials: AuthCredentials): Promise<strin
     return cachedToken;
   }
 
-  const privateKeyPem = fs.readFileSync(credentials.keyPath, 'utf-8');
+  const privateKeyPem = credentials.privateKey || fs.readFileSync(credentials.keyPath!, 'utf-8');
   const privateKey = await jose.importPKCS8(privateKeyPem, 'ES256');
 
   const jwt = await new jose.SignJWT({})

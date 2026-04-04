@@ -102,7 +102,7 @@ To get native annotations on your commits, use `--format github`:
   env:
     ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
     ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-    ASC_KEY: ${{ secrets.ASC_KEY_P8_CONTENT }}
+    ASC_PRIVATE_KEY: ${{ secrets.ASC_KEY_P8_CONTENT }}
 ```
 
 ## 🔧 Advanced Usage
@@ -114,8 +114,11 @@ ascdoc --format html --output report.html
 # Only run specific modules
 ascdoc --only screenshots,localization
 
-# Audit only changes vs. live version
+# Audit only changes vs. last report (defaults to report.json)
 ascdoc --compare
+
+# Audit only changes vs. a specific report
+ascdoc --compare ./previous-audit.json
 ```
 
 ## 📄 License
