@@ -8,8 +8,8 @@
 
 ASC Doctor is a read-only release auditor for App Store Connect. It analyzes your metadata, screenshots, URLs, and localizations against App Store guidelines and instantly gives you a risk score and an actionable HTML report.
 
-[![npm version](https://img.shields.io/npm/v/@spectreet/ascdoc?style=flat-square&color=CB3837)](https://www.npmjs.com/package/@spectreet/ascdoc)
-[![npm downloads](https://img.shields.io/npm/dm/@spectreet/ascdoc?style=flat-square&color=333333)](https://www.npmjs.com/package/@spectreet/ascdoc)
+[![npm version](https://img.shields.io/npm/v/@spectrex/ascdoc?style=flat-square&color=CB3837)](https://www.npmjs.com/package/@spectrex/ascdoc)
+[![npm downloads](https://img.shields.io/npm/dm/@spectrex/ascdoc?style=flat-square&color=333333)](https://www.npmjs.com/package/@spectrex/ascdoc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/spectreet/ascdoc/test.yml?branch=main&style=flat-square)](https://github.com/spectreet/ascdoc/actions)
 
@@ -29,7 +29,7 @@ ASC Doctor is a read-only release auditor for App Store Connect. It analyzes you
 Experience it instantly via our demo data (no API key required):
 
 ```bash
-npx @spectreet/ascdoc --demo --format html --output report.html
+npx @spectrex/ascdoc --demo --format html --output report.html
 # Then open report.html in your browser!
 ```
 
@@ -98,7 +98,7 @@ To get native annotations on your commits, use `--format github`:
 
 ```yaml
 - name: Audit App Store readiness
-  run: npx @spectreet/ascdoc --format github --min-score 80
+  run: npx @spectrex/ascdoc --format github --min-score 80
   env:
     ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
     ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
