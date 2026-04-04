@@ -1,6 +1,6 @@
 {
   "name": "@spectrex/ascdoc",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "🩺 Release readiness auditor for App Store Connect",
   "type": "module",
   "main": "./dist/index.js",
