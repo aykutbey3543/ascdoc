@@ -1,0 +1,764 @@
+{
+  "tool": "ascdoc",
+  "version": "1.1.2",
+  "app": {
+    "name": "WeatherPulse",
+    "bundleId": "com.example.weatherpulse",
+    "version": "2.4.0",
+    "platform": "IOS"
+  },
+  "date": "2026-04-04",
+  "score": 0,
+  "grade": "F",
+  "gradeLabel": "Do not submit",
+  "summary": {
+    "critical": 7,
+    "high": 11,
+    "warning": 14,
+    "info": 8,
+    "total": 40,
+    "passed": 2
+  },
+  "findings": [
+    {
+      "id": "LOC-001",
+      "module": "localization",
+      "severity": "critical",
+      "title": "Missing description for locale `de-DE`",
+      "message": "The App Store description is empty for the de-DE localization. This is a required field for submission.",
+      "locale": "de-DE",
+      "remedy": "Add a compelling description for de-DE in App Store Connect > App Store > Version Information."
+    },
+    {
+      "id": "LOC-002",
+      "module": "localization",
+      "severity": "warning",
+      "title": "Missing keywords for locale `de-DE`",
+      "message": "Keywords field is empty for de-DE. This is a missed ASO (App Store Optimization) opportunity.",
+      "locale": "de-DE",
+      "remedy": "Add comma-separated keywords (max 100 chars) for de-DE to improve search visibility."
+    },
+    {
+      "id": "LOC-003",
+      "module": "localization",
+      "severity": "info",
+      "title": "Missing promotional text for locale `de-DE`",
+      "message": "Promotional text is empty for de-DE. This field can be updated without app review.",
+      "locale": "de-DE",
+      "remedy": "Add promotional text for de-DE. This is shown at the top of the description and can be updated anytime."
+    },
+    {
+      "id": "LOC-003",
+      "module": "localization",
+      "severity": "info",
+      "title": "Missing promotional text for locale `ja`",
+      "message": "Promotional text is empty for ja. This field can be updated without app review.",
+      "locale": "ja",
+      "remedy": "Add promotional text for ja. This is shown at the top of the description and can be updated anytime."
+    },
+    {
+      "id": "LOC-004",
+      "module": "localization",
+      "severity": "critical",
+      "title": "Placeholder text detected in `ja` description",
+      "message": "The description for ja contains placeholder text matching \"\\bTODO\\b\". This will likely cause rejection.",
+      "locale": "ja",
+      "remedy": "Replace placeholder text in the ja description with real content before submission."
+    },
+    {
+      "id": "LOC-005",
+      "module": "localization",
+      "severity": "warning",
+      "title": "Description too short for locale `ja`",
+      "message": "The description for ja is only 35 characters. Consider expanding it for better ASO.",
+      "locale": "ja",
+      "remedy": "Expand the ja description to at least 100 characters with feature highlights, benefits, and relevant keywords."
+    },
+    {
+      "id": "LOC-011",
+      "module": "localization",
+      "severity": "warning",
+      "title": "Weak keywords in `ja`",
+      "message": "Keywords contain weak or disallowed terms: app, free. Apple auto-indexes \"app\" and \"free\" and rejects pricing/superlative claims.",
+      "locale": "ja",
+      "remedy": "Remove weak keywords to save character limits. Use specific terms describing features."
+    },
+    {
+      "id": "LOC-012",
+      "module": "localization",
+      "severity": "warning",
+      "title": "Duplicate keywords in `ja`",
+      "message": "Your keywords field contains duplicated terms. This wastes your 100-character limit.",
+      "locale": "ja",
+      "remedy": "Remove duplicate keywords. Apple automatically combines singular/plural and keyword combinations. Example: use \"weather,radar,forecast\" instead of \"weather,weather radar,forecast\"."
+    },
+    {
+      "id": "LOC-003",
+      "module": "localization",
+      "severity": "info",
+      "title": "Missing promotional text for locale `fr-FR`",
+      "message": "Promotional text is empty for fr-FR. This field can be updated without app review.",
+      "locale": "fr-FR",
+      "remedy": "Add promotional text for fr-FR. This is shown at the top of the description and can be updated anytime."
+    },
+    {
+      "id": "LOC-005",
+      "module": "localization",
+      "severity": "warning",
+      "title": "Description too short for locale `fr-FR`",
+      "message": "The description for fr-FR is only 99 characters. Consider expanding it for better ASO.",
+      "locale": "fr-FR",
+      "remedy": "Expand the fr-FR description to at least 100 characters with feature highlights, benefits, and relevant keywords."
+    },
+    {
+      "id": "LOC-008",
+      "module": "localization",
+      "severity": "high",
+      "title": "App info locale `ko` missing version metadata",
+      "message": "App info localization exists for ko but there's no corresponding version localization (description, keywords, etc.).",
+      "locale": "ko",
+      "remedy": "Add version metadata (description, keywords) for ko or remove the app info localization if not needed."
+    },
+    {
+      "id": "SCR-007",
+      "module": "screenshots",
+      "severity": "warning",
+      "title": "Duplicate screenshots detected in `en-US`",
+      "message": "Multiple screenshots in the iPhone 6.7\" set have the exact same image checksum.",
+      "locale": "en-US",
+      "remedy": "Remove duplicated files and ensure all screenshots show unique functionality."
+    },
+    {
+      "id": "SCR-003",
+      "module": "screenshots",
+      "severity": "high",
+      "title": "Empty screenshot set for iPhone 6.7\" in `de-DE`",
+      "message": "A screenshot set exists for iPhone 6.7\" (de-DE) but contains 0 screenshots. Either upload screenshots or remove the empty set.",
+      "locale": "de-DE",
+      "remedy": "Upload screenshots to the iPhone 6.7\" set for de-DE, or delete the empty set."
+    },
+    {
+      "id": "SCR-006",
+      "module": "screenshots",
+      "severity": "critical",
+      "title": "Missing required iPad screenshots for `de-DE`",
+      "message": "Your app has iPad screenshots, but none for the required 13\" or 12.9\" Pro format in de-DE.",
+      "locale": "de-DE",
+      "remedy": "Upload 13\" or 12.9\" iPad Pro screenshots for de-DE."
+    },
+    {
+      "id": "SCR-004",
+      "module": "screenshots",
+      "severity": "warning",
+      "title": "Few screenshots for iPhone 6.7\" in `ja`",
+      "message": "Only 1 screenshot(s) for iPhone 6.7\" (ja). Apple allows up to 10. More screenshots improve conversion.",
+      "locale": "ja",
+      "remedy": "Consider adding more screenshots (recommended: 5-8) for iPhone 6.7\" in ja."
+    },
+    {
+      "id": "SCR-001",
+      "module": "screenshots",
+      "severity": "critical",
+      "title": "No screenshots for locale `fr-FR`",
+      "message": "The fr-FR localization has no screenshot sets. At least one set with screenshots is required for submission.",
+      "locale": "fr-FR",
+      "remedy": "Upload screenshots for fr-FR in App Store Connect > App Store > Version > Media."
+    },
+    {
+      "id": "AGE-003",
+      "module": "age-rating",
+      "severity": "info",
+      "title": "All age rating fields set to minimal",
+      "message": "All content descriptors are set to NONE or INFREQUENT_OR_MILD. Verify this accurately reflects your app's content.",
+      "remedy": "Review the age rating questionnaire to ensure it accurately represents your app's content."
+    },
+    {
+      "id": "SUB-004",
+      "module": "subtitle",
+      "severity": "warning",
+      "title": "Generic subtitle for locale `en-US`",
+      "message": "The subtitle for en-US (\"Best Weather App\") contains the generic term \"best\". Apple may flag superlative or subjective claims.",
+      "locale": "en-US",
+      "remedy": "Replace generic terms with specific, factual descriptions of what your app does. Example: Use \"Track daily expenses\" instead of \"Best finance app\"."
+    },
+    {
+      "id": "SUB-001",
+      "module": "subtitle",
+      "severity": "warning",
+      "title": "Missing subtitle for locale `de-DE`",
+      "message": "No subtitle is set for de-DE. Subtitles appear below the app name in search results and improve discoverability.",
+      "locale": "de-DE",
+      "remedy": "Add a compelling subtitle (max 30 chars) for de-DE that highlights your app's key value proposition."
+    },
+    {
+      "id": "SUB-002",
+      "module": "subtitle",
+      "severity": "info",
+      "title": "Subtitle too short for locale `ja`",
+      "message": "The subtitle for ja is only 2 characters (\"WP\"). Consider using more of the 30-character limit.",
+      "locale": "ja",
+      "remedy": "Expand the subtitle for ja to better utilize the 30-character limit."
+    },
+    {
+      "id": "SUB-001",
+      "module": "subtitle",
+      "severity": "warning",
+      "title": "Missing subtitle for locale `ko`",
+      "message": "No subtitle is set for ko. Subtitles appear below the app name in search results and improve discoverability.",
+      "locale": "ko",
+      "remedy": "Add a compelling subtitle (max 30 chars) for ko that highlights your app's key value proposition."
+    },
+    {
+      "id": "PRV-001",
+      "module": "privacy",
+      "severity": "critical",
+      "title": "Missing privacy policy URL for locale `ja`",
+      "message": "No privacy policy URL is set for ja. A valid privacy policy URL is required for all apps since October 2018.",
+      "locale": "ja",
+      "remedy": "Add a publicly accessible privacy policy URL for ja in App Store Connect > App Information."
+    },
+    {
+      "id": "PRV-003",
+      "module": "privacy",
+      "severity": "warning",
+      "title": "Privacy policy URL not HTTPS for locale `fr-FR`",
+      "message": "The privacy policy URL for fr-FR uses HTTP instead of HTTPS. Apple recommends HTTPS for all URLs.",
+      "locale": "fr-FR",
+      "remedy": "Update the privacy policy URL for fr-FR to use HTTPS."
+    },
+    {
+      "id": "PRV-005",
+      "module": "privacy",
+      "severity": "info",
+      "title": "No privacy choices URL configured",
+      "message": "No privacy choices URL is set. This is optional but recommended if your app collects personal data and you offer data management options.",
+      "remedy": "Consider adding a privacy choices URL where users can manage their data preferences."
+    },
+    {
+      "id": "SUBS-001",
+      "module": "subscription",
+      "severity": "high",
+      "title": "Subscription group \"WeatherPulse Pro\" missing `de-DE` localization",
+      "message": "The subscription group \"WeatherPulse Pro\" has no display name for de-DE. This can cause \"Missing Metadata\" states for subscriptions in this group.",
+      "locale": "de-DE",
+      "remedy": "Add a display name for de-DE under the subscription group \"WeatherPulse Pro\" in App Store Connect."
+    },
+    {
+      "id": "SUBS-001",
+      "module": "subscription",
+      "severity": "high",
+      "title": "Subscription group \"WeatherPulse Pro\" missing `ja` localization",
+      "message": "The subscription group \"WeatherPulse Pro\" has no display name for ja. This can cause \"Missing Metadata\" states for subscriptions in this group.",
+      "locale": "ja",
+      "remedy": "Add a display name for ja under the subscription group \"WeatherPulse Pro\" in App Store Connect."
+    },
+    {
+      "id": "SUBS-001",
+      "module": "subscription",
+      "severity": "high",
+      "title": "Subscription group \"WeatherPulse Pro\" missing `fr-FR` localization",
+      "message": "The subscription group \"WeatherPulse Pro\" has no display name for fr-FR. This can cause \"Missing Metadata\" states for subscriptions in this group.",
+      "locale": "fr-FR",
+      "remedy": "Add a display name for fr-FR under the subscription group \"WeatherPulse Pro\" in App Store Connect."
+    },
+    {
+      "id": "SUBS-003",
+      "module": "subscription",
+      "severity": "critical",
+      "title": "Subscription \"Monthly Pro\" missing display name for `de-DE`",
+      "message": "The subscription \"Monthly Pro\" has no localized display name for de-DE. This is required for the subscription sheet.",
+      "locale": "de-DE",
+      "remedy": "Add a display name for \"Monthly Pro\" in de-DE."
+    },
+    {
+      "id": "SUBS-004",
+      "module": "subscription",
+      "severity": "critical",
+      "title": "Subscription \"Monthly Pro\" missing description for `de-DE`",
+      "message": "The subscription \"Monthly Pro\" has no localized description for de-DE. This is required for App Store display.",
+      "locale": "de-DE",
+      "remedy": "Add a description for \"Monthly Pro\" in de-DE."
+    },
+    {
+      "id": "SUBS-005",
+      "module": "subscription",
+      "severity": "high",
+      "title": "Subscription \"Monthly Pro\" missing `ja` localization",
+      "message": "Your app supports ja but the subscription \"Monthly Pro\" has no localization for it.",
+      "locale": "ja",
+      "remedy": "Add localized metadata for \"Monthly Pro\" in ja."
+    },
+    {
+      "id": "SUBS-005",
+      "module": "subscription",
+      "severity": "high",
+      "title": "Subscription \"Monthly Pro\" missing `fr-FR` localization",
+      "message": "Your app supports fr-FR but the subscription \"Monthly Pro\" has no localization for it.",
+      "locale": "fr-FR",
+      "remedy": "Add localized metadata for \"Monthly Pro\" in fr-FR."
+    },
+    {
+      "id": "SUBS-009",
+      "module": "subscription",
+      "severity": "high",
+      "title": "Missing billing terms in description for `en-US`",
+      "message": "The subscription \"Monthly Pro\" mentions a \"trial\" or \"free\" period but does not explain auto-renewal or cancellation terms.",
+      "locale": "en-US",
+      "remedy": "Add text explaining that the subscription auto-renews. Example: \"Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Account will be charged for renewal within 24-hours prior to the end of the current period.\""
+    },
+    {
+      "id": "SUBS-008",
+      "module": "subscription",
+      "severity": "high",
+      "title": "IAP \"Radar Themes Pack\" missing `de-DE` localization",
+      "message": "Your app supports de-DE but the IAP \"Radar Themes Pack\" has no localization for it.",
+      "locale": "de-DE",
+      "remedy": "Add localized metadata for \"Radar Themes Pack\" in de-DE."
+    },
+    {
+      "id": "SUBS-008",
+      "module": "subscription",
+      "severity": "high",
+      "title": "IAP \"Radar Themes Pack\" missing `ja` localization",
+      "message": "Your app supports ja but the IAP \"Radar Themes Pack\" has no localization for it.",
+      "locale": "ja",
+      "remedy": "Add localized metadata for \"Radar Themes Pack\" in ja."
+    },
+    {
+      "id": "SUBS-008",
+      "module": "subscription",
+      "severity": "high",
+      "title": "IAP \"Radar Themes Pack\" missing `fr-FR` localization",
+      "message": "Your app supports fr-FR but the IAP \"Radar Themes Pack\" has no localization for it.",
+      "locale": "fr-FR",
+      "remedy": "Add localized metadata for \"Radar Themes Pack\" in fr-FR."
+    },
+    {
+      "id": "STR-002",
+      "module": "storefront",
+      "severity": "warning",
+      "title": "Limited territory coverage (6 territories)",
+      "message": "Your app is available in only 6 territories. Apple supports 175+ storefronts.",
+      "remedy": "Consider expanding availability to more territories to increase your potential audience."
+    },
+    {
+      "id": "STR-004",
+      "module": "storefront",
+      "severity": "warning",
+      "title": "Missing 9 major market(s)",
+      "message": "Your app is not available in: Japan, China, South Korea, Brazil, India, Italy, Spain, Netherlands, Turkey. These are among the highest-revenue App Store markets.",
+      "remedy": "Consider making your app available in these markets: Japan, China, South Korea, Brazil, India, Italy, Spain, Netherlands, Turkey."
+    },
+    {
+      "id": "STR-005",
+      "module": "storefront",
+      "severity": "warning",
+      "title": "Localized for `ja` but not available in corresponding territory",
+      "message": "Your app has ja localization but is not available in the corresponding territory. The localization effort may be wasted.",
+      "locale": "ja",
+      "remedy": "Consider making your app available in the territory that corresponds to the ja localization, or remove the unused localization."
+    },
+    {
+      "id": "REV-004",
+      "module": "review-info",
+      "severity": "info",
+      "title": "Missing reviewer contact phone",
+      "message": "No phone number provided for the review team.",
+      "remedy": "Consider adding a phone number for faster communication during review."
+    },
+    {
+      "id": "REV-007",
+      "module": "review-info",
+      "severity": "info",
+      "title": "No review notes provided",
+      "message": "The review notes field is empty. Notes can help the reviewer understand special features, required hardware, or complex flows.",
+      "remedy": "Consider adding notes to guide the reviewer, especially for apps with sign-in, subscriptions, or specialized hardware."
+    }
+  ],
+  "results": [
+    {
+      "module": "localization",
+      "label": "Localization",
+      "findingCount": 11,
+      "duration": 880,
+      "findings": [
+        {
+          "id": "LOC-001",
+          "severity": "critical",
+          "title": "Missing description for locale `de-DE`",
+          "message": "The App Store description is empty for the de-DE localization. This is a required field for submission.",
+          "locale": "de-DE",
+          "remedy": "Add a compelling description for de-DE in App Store Connect > App Store > Version Information."
+        },
+        {
+          "id": "LOC-002",
+          "severity": "warning",
+          "title": "Missing keywords for locale `de-DE`",
+          "message": "Keywords field is empty for de-DE. This is a missed ASO (App Store Optimization) opportunity.",
+          "locale": "de-DE",
+          "remedy": "Add comma-separated keywords (max 100 chars) for de-DE to improve search visibility."
+        },
+        {
+          "id": "LOC-003",
+          "severity": "info",
+          "title": "Missing promotional text for locale `de-DE`",
+          "message": "Promotional text is empty for de-DE. This field can be updated without app review.",
+          "locale": "de-DE",
+          "remedy": "Add promotional text for de-DE. This is shown at the top of the description and can be updated anytime."
+        },
+        {
+          "id": "LOC-003",
+          "severity": "info",
+          "title": "Missing promotional text for locale `ja`",
+          "message": "Promotional text is empty for ja. This field can be updated without app review.",
+          "locale": "ja",
+          "remedy": "Add promotional text for ja. This is shown at the top of the description and can be updated anytime."
+        },
+        {
+          "id": "LOC-004",
+          "severity": "critical",
+          "title": "Placeholder text detected in `ja` description",
+          "message": "The description for ja contains placeholder text matching \"\\bTODO\\b\". This will likely cause rejection.",
+          "locale": "ja",
+          "remedy": "Replace placeholder text in the ja description with real content before submission."
+        },
+        {
+          "id": "LOC-005",
+          "severity": "warning",
+          "title": "Description too short for locale `ja`",
+          "message": "The description for ja is only 35 characters. Consider expanding it for better ASO.",
+          "locale": "ja",
+          "remedy": "Expand the ja description to at least 100 characters with feature highlights, benefits, and relevant keywords."
+        },
+        {
+          "id": "LOC-011",
+          "severity": "warning",
+          "title": "Weak keywords in `ja`",
+          "message": "Keywords contain weak or disallowed terms: app, free. Apple auto-indexes \"app\" and \"free\" and rejects pricing/superlative claims.",
+          "locale": "ja",
+          "remedy": "Remove weak keywords to save character limits. Use specific terms describing features."
+        },
+        {
+          "id": "LOC-012",
+          "severity": "warning",
+          "title": "Duplicate keywords in `ja`",
+          "message": "Your keywords field contains duplicated terms. This wastes your 100-character limit.",
+          "locale": "ja",
+          "remedy": "Remove duplicate keywords. Apple automatically combines singular/plural and keyword combinations. Example: use \"weather,radar,forecast\" instead of \"weather,weather radar,forecast\"."
+        },
+        {
+          "id": "LOC-003",
+          "severity": "info",
+          "title": "Missing promotional text for locale `fr-FR`",
+          "message": "Promotional text is empty for fr-FR. This field can be updated without app review.",
+          "locale": "fr-FR",
+          "remedy": "Add promotional text for fr-FR. This is shown at the top of the description and can be updated anytime."
+        },
+        {
+          "id": "LOC-005",
+          "severity": "warning",
+          "title": "Description too short for locale `fr-FR`",
+          "message": "The description for fr-FR is only 99 characters. Consider expanding it for better ASO.",
+          "locale": "fr-FR",
+          "remedy": "Expand the fr-FR description to at least 100 characters with feature highlights, benefits, and relevant keywords."
+        },
+        {
+          "id": "LOC-008",
+          "severity": "high",
+          "title": "App info locale `ko` missing version metadata",
+          "message": "App info localization exists for ko but there's no corresponding version localization (description, keywords, etc.).",
+          "locale": "ko",
+          "remedy": "Add version metadata (description, keywords) for ko or remove the app info localization if not needed."
+        }
+      ]
+    },
+    {
+      "module": "screenshots",
+      "label": "Screenshots",
+      "findingCount": 5,
+      "duration": 0,
+      "findings": [
+        {
+          "id": "SCR-007",
+          "severity": "warning",
+          "title": "Duplicate screenshots detected in `en-US`",
+          "message": "Multiple screenshots in the iPhone 6.7\" set have the exact same image checksum.",
+          "locale": "en-US",
+          "remedy": "Remove duplicated files and ensure all screenshots show unique functionality."
+        },
+        {
+          "id": "SCR-003",
+          "severity": "high",
+          "title": "Empty screenshot set for iPhone 6.7\" in `de-DE`",
+          "message": "A screenshot set exists for iPhone 6.7\" (de-DE) but contains 0 screenshots. Either upload screenshots or remove the empty set.",
+          "locale": "de-DE",
+          "remedy": "Upload screenshots to the iPhone 6.7\" set for de-DE, or delete the empty set."
+        },
+        {
+          "id": "SCR-006",
+          "severity": "critical",
+          "title": "Missing required iPad screenshots for `de-DE`",
+          "message": "Your app has iPad screenshots, but none for the required 13\" or 12.9\" Pro format in de-DE.",
+          "locale": "de-DE",
+          "remedy": "Upload 13\" or 12.9\" iPad Pro screenshots for de-DE."
+        },
+        {
+          "id": "SCR-004",
+          "severity": "warning",
+          "title": "Few screenshots for iPhone 6.7\" in `ja`",
+          "message": "Only 1 screenshot(s) for iPhone 6.7\" (ja). Apple allows up to 10. More screenshots improve conversion.",
+          "locale": "ja",
+          "remedy": "Consider adding more screenshots (recommended: 5-8) for iPhone 6.7\" in ja."
+        },
+        {
+          "id": "SCR-001",
+          "severity": "critical",
+          "title": "No screenshots for locale `fr-FR`",
+          "message": "The fr-FR localization has no screenshot sets. At least one set with screenshots is required for submission.",
+          "locale": "fr-FR",
+          "remedy": "Upload screenshots for fr-FR in App Store Connect > App Store > Version > Media."
+        }
+      ]
+    },
+    {
+      "module": "age-rating",
+      "label": "Age Rating",
+      "findingCount": 1,
+      "duration": 0,
+      "findings": [
+        {
+          "id": "AGE-003",
+          "severity": "info",
+          "title": "All age rating fields set to minimal",
+          "message": "All content descriptors are set to NONE or INFREQUENT_OR_MILD. Verify this accurately reflects your app's content.",
+          "locale": null,
+          "remedy": "Review the age rating questionnaire to ensure it accurately represents your app's content."
+        }
+      ]
+    },
+    {
+      "module": "subtitle",
+      "label": "Subtitle",
+      "findingCount": 4,
+      "duration": 0,
+      "findings": [
+        {
+          "id": "SUB-004",
+          "severity": "warning",
+          "title": "Generic subtitle for locale `en-US`",
+          "message": "The subtitle for en-US (\"Best Weather App\") contains the generic term \"best\". Apple may flag superlative or subjective claims.",
+          "locale": "en-US",
+          "remedy": "Replace generic terms with specific, factual descriptions of what your app does. Example: Use \"Track daily expenses\" instead of \"Best finance app\"."
+        },
+        {
+          "id": "SUB-001",
+          "severity": "warning",
+          "title": "Missing subtitle for locale `de-DE`",
+          "message": "No subtitle is set for de-DE. Subtitles appear below the app name in search results and improve discoverability.",
+          "locale": "de-DE",
+          "remedy": "Add a compelling subtitle (max 30 chars) for de-DE that highlights your app's key value proposition."
+        },
+        {
+          "id": "SUB-002",
+          "severity": "info",
+          "title": "Subtitle too short for locale `ja`",
+          "message": "The subtitle for ja is only 2 characters (\"WP\"). Consider using more of the 30-character limit.",
+          "locale": "ja",
+          "remedy": "Expand the subtitle for ja to better utilize the 30-character limit."
+        },
+        {
+          "id": "SUB-001",
+          "severity": "warning",
+          "title": "Missing subtitle for locale `ko`",
+          "message": "No subtitle is set for ko. Subtitles appear below the app name in search results and improve discoverability.",
+          "locale": "ko",
+          "remedy": "Add a compelling subtitle (max 30 chars) for ko that highlights your app's key value proposition."
+        }
+      ]
+    },
+    {
+      "module": "privacy",
+      "label": "Privacy",
+      "findingCount": 3,
+      "duration": 1967,
+      "findings": [
+        {
+          "id": "PRV-001",
+          "severity": "critical",
+          "title": "Missing privacy policy URL for locale `ja`",
+          "message": "No privacy policy URL is set for ja. A valid privacy policy URL is required for all apps since October 2018.",
+          "locale": "ja",
+          "remedy": "Add a publicly accessible privacy policy URL for ja in App Store Connect > App Information."
+        },
+        {
+          "id": "PRV-003",
+          "severity": "warning",
+          "title": "Privacy policy URL not HTTPS for locale `fr-FR`",
+          "message": "The privacy policy URL for fr-FR uses HTTP instead of HTTPS. Apple recommends HTTPS for all URLs.",
+          "locale": "fr-FR",
+          "remedy": "Update the privacy policy URL for fr-FR to use HTTPS."
+        },
+        {
+          "id": "PRV-005",
+          "severity": "info",
+          "title": "No privacy choices URL configured",
+          "message": "No privacy choices URL is set. This is optional but recommended if your app collects personal data and you offer data management options.",
+          "locale": null,
+          "remedy": "Consider adding a privacy choices URL where users can manage their data preferences."
+        }
+      ]
+    },
+    {
+      "module": "subscription",
+      "label": "Subscriptions & IAP",
+      "findingCount": 11,
+      "duration": 0,
+      "findings": [
+        {
+          "id": "SUBS-001",
+          "severity": "high",
+          "title": "Subscription group \"WeatherPulse Pro\" missing `de-DE` localization",
+          "message": "The subscription group \"WeatherPulse Pro\" has no display name for de-DE. This can cause \"Missing Metadata\" states for subscriptions in this group.",
+          "locale": "de-DE",
+          "remedy": "Add a display name for de-DE under the subscription group \"WeatherPulse Pro\" in App Store Connect."
+        },
+        {
+          "id": "SUBS-001",
+          "severity": "high",
+          "title": "Subscription group \"WeatherPulse Pro\" missing `ja` localization",
+          "message": "The subscription group \"WeatherPulse Pro\" has no display name for ja. This can cause \"Missing Metadata\" states for subscriptions in this group.",
+          "locale": "ja",
+          "remedy": "Add a display name for ja under the subscription group \"WeatherPulse Pro\" in App Store Connect."
+        },
+        {
+          "id": "SUBS-001",
+          "severity": "high",
+          "title": "Subscription group \"WeatherPulse Pro\" missing `fr-FR` localization",
+          "message": "The subscription group \"WeatherPulse Pro\" has no display name for fr-FR. This can cause \"Missing Metadata\" states for subscriptions in this group.",
+          "locale": "fr-FR",
+          "remedy": "Add a display name for fr-FR under the subscription group \"WeatherPulse Pro\" in App Store Connect."
+        },
+        {
+          "id": "SUBS-003",
+          "severity": "critical",
+          "title": "Subscription \"Monthly Pro\" missing display name for `de-DE`",
+          "message": "The subscription \"Monthly Pro\" has no localized display name for de-DE. This is required for the subscription sheet.",
+          "locale": "de-DE",
+          "remedy": "Add a display name for \"Monthly Pro\" in de-DE."
+        },
+        {
+          "id": "SUBS-004",
+          "severity": "critical",
+          "title": "Subscription \"Monthly Pro\" missing description for `de-DE`",
+          "message": "The subscription \"Monthly Pro\" has no localized description for de-DE. This is required for App Store display.",
+          "locale": "de-DE",
+          "remedy": "Add a description for \"Monthly Pro\" in de-DE."
+        },
+        {
+          "id": "SUBS-005",
+          "severity": "high",
+          "title": "Subscription \"Monthly Pro\" missing `ja` localization",
+          "message": "Your app supports ja but the subscription \"Monthly Pro\" has no localization for it.",
+          "locale": "ja",
+          "remedy": "Add localized metadata for \"Monthly Pro\" in ja."
+        },
+        {
+          "id": "SUBS-005",
+          "severity": "high",
+          "title": "Subscription \"Monthly Pro\" missing `fr-FR` localization",
+          "message": "Your app supports fr-FR but the subscription \"Monthly Pro\" has no localization for it.",
+          "locale": "fr-FR",
+          "remedy": "Add localized metadata for \"Monthly Pro\" in fr-FR."
+        },
+        {
+          "id": "SUBS-009",
+          "severity": "high",
+          "title": "Missing billing terms in description for `en-US`",
+          "message": "The subscription \"Monthly Pro\" mentions a \"trial\" or \"free\" period but does not explain auto-renewal or cancellation terms.",
+          "locale": "en-US",
+          "remedy": "Add text explaining that the subscription auto-renews. Example: \"Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Account will be charged for renewal within 24-hours prior to the end of the current period.\""
+        },
+        {
+          "id": "SUBS-008",
+          "severity": "high",
+          "title": "IAP \"Radar Themes Pack\" missing `de-DE` localization",
+          "message": "Your app supports de-DE but the IAP \"Radar Themes Pack\" has no localization for it.",
+          "locale": "de-DE",
+          "remedy": "Add localized metadata for \"Radar Themes Pack\" in de-DE."
+        },
+        {
+          "id": "SUBS-008",
+          "severity": "high",
+          "title": "IAP \"Radar Themes Pack\" missing `ja` localization",
+          "message": "Your app supports ja but the IAP \"Radar Themes Pack\" has no localization for it.",
+          "locale": "ja",
+          "remedy": "Add localized metadata for \"Radar Themes Pack\" in ja."
+        },
+        {
+          "id": "SUBS-008",
+          "severity": "high",
+          "title": "IAP \"Radar Themes Pack\" missing `fr-FR` localization",
+          "message": "Your app supports fr-FR but the IAP \"Radar Themes Pack\" has no localization for it.",
+          "locale": "fr-FR",
+          "remedy": "Add localized metadata for \"Radar Themes Pack\" in fr-FR."
+        }
+      ]
+    },
+    {
+      "module": "storefront",
+      "label": "Storefront Coverage",
+      "findingCount": 3,
+      "duration": 0,
+      "findings": [
+        {
+          "id": "STR-002",
+          "severity": "warning",
+          "title": "Limited territory coverage (6 territories)",
+          "message": "Your app is available in only 6 territories. Apple supports 175+ storefronts.",
+          "locale": null,
+          "remedy": "Consider expanding availability to more territories to increase your potential audience."
+        },
+        {
+          "id": "STR-004",
+          "severity": "warning",
+          "title": "Missing 9 major market(s)",
+          "message": "Your app is not available in: Japan, China, South Korea, Brazil, India, Italy, Spain, Netherlands, Turkey. These are among the highest-revenue App Store markets.",
+          "locale": null,
+          "remedy": "Consider making your app available in these markets: Japan, China, South Korea, Brazil, India, Italy, Spain, Netherlands, Turkey."
+        },
+        {
+          "id": "STR-005",
+          "severity": "warning",
+          "title": "Localized for `ja` but not available in corresponding territory",
+          "message": "Your app has ja localization but is not available in the corresponding territory. The localization effort may be wasted.",
+          "locale": "ja",
+          "remedy": "Consider making your app available in the territory that corresponds to the ja localization, or remove the unused localization."
+        }
+      ]
+    },
+    {
+      "module": "review-info",
+      "label": "Review Info",
+      "findingCount": 2,
+      "duration": 0,
+      "findings": [
+        {
+          "id": "REV-004",
+          "severity": "info",
+          "title": "Missing reviewer contact phone",
+          "message": "No phone number provided for the review team.",
+          "locale": null,
+          "remedy": "Consider adding a phone number for faster communication during review."
+        },
+        {
+          "id": "REV-007",
+          "severity": "info",
+          "title": "No review notes provided",
+          "message": "The review notes field is empty. Notes can help the reviewer understand special features, required hardware, or complex flows.",
+          "locale": null,
+          "remedy": "Consider adding notes to guide the reviewer, especially for apps with sign-in, subscriptions, or specialized hardware."
+        }
+      ]
+    }
+  ]
+}
