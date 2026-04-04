@@ -110,7 +110,7 @@ export function validateConfig(config: ASCConfig): string[] {
   }
   
   if (!config.privateKey && !config.keyPath) {
-    errors.push('Missing --key (or ASC_PRIVATE_KEY_PATH / ASC_PRIVATE_KEY env variable)');
+    errors.push('Missing --key (or ASC_KEY_PATH / ASC_PRIVATE_KEY env variable)');
   } else if (config.keyPath && !config.privateKey && !fs.existsSync(config.keyPath)) {
     errors.push(`Key file not found: ${config.keyPath}`);
   }
